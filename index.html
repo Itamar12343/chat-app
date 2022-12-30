@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    <title>family chat</title>
+    <link rel="icon" href="chat.png">
+    <script src="index.js" defer></script>
+    <script src="push.js" defer></script>
+    <script src="library.js" defer></script>
+
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
+
+    <script type="application/javascript">
+        var firebaseConfig = {
+            apiKey: "AIzaSyC8ks3N0GgQtAd-f4uJ26pw_46zrvcq_sw",
+            authDomain: "pc-family-chat.firebaseapp.com",
+            projectId: "pc-family-chat",
+            storageBucket: "pc-family-chat.appspot.com",
+            messagingSenderId: "198112913959",
+            appId: "1:198112913959:web:c428f54be1b30ae04c3c02"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+
+</head>
+
+<body>
+
+
+    <div class="set-log-out-box">
+        <div class="log-out-box">
+            <h1 class="log-out-text">are you shure you want to log out?</h1>
+            <div class="set-log-out-btns">
+                <button class="log-out-yes">log out</button>
+                <button class="log-out-cancel">cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="box">
+        <div class="typing">...מקליד/ה</div>
+
+        <div class="set-msgs-spiner">
+            <div class="msgs-spiner"></div>
+        </div>
+
+        <div class="msgs">
+
+
+        </div>
+
+
+
+        <div class="box-ball">
+            <h1 class="box-first-letter"></h1>
+        </div>
+
+
+
+
+        <div class="send-ball"></div>
+
+        <button class="send">    				
+    <div class="send-icon"><i class="bi bi-send-fill"></i></div>
+    </button>
+
+        <textarea placeholder="...הודעה" class="input"></textarea>
+
+        <button class="camera-btn"><i class="bi bi-camera-fill"></i></button>
+
+        <button class="upload-btn"><i class="bi bi-paperclip"></i></button>
+
+        <input class="file-input" type="file">
+    </div>
+    <style>
+        .img-v {
+            position: relative;
+            top: -16px;
+            left: 10px;
+            margin-top: auto;
+            font-size: 20px;
+            color: #fff;
+        }
+        
+        .img {
+            height: 290px;
+            width: 290px;
+            background-color: rgb(255, 253, 200, 0.4);
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            background-position: center;
+            background-size: cover;
+        }
+        
+        .set-img {
+            height: 300px;
+            width: 300px;
+            background-color: rgb(125, 237, 160);
+            margin-left: 30px;
+            margin-top: 16px;
+            border-radius: 10px;
+            transition: 0.4s;
+        }
+        
+        .eimg {
+            height: 290px;
+            width: 290px;
+            background-color: rgb(255, 253, 200, 0.4);
+            position: relative;
+            left: 50%;
+            top: -22px;
+            transform: translate(-50%);
+            border-radius: 10px;
+            background-position: center;
+            background-size: cover;
+            z-index: 1;
+        }
+        
+        .set-eimg {
+            height: 300px;
+            width: 300px;
+            background-color: rgb(255, 243, 156);
+            margin-left: 30px;
+            margin-top: 16px;
+            border-radius: 10px;
+            transition: 0.4s;
+            margin-left: auto;
+            margin-right: 30px;
+            transition: 0.4s;
+        }
+        
+        .set-msgs-spiner {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: 0.4s;
+        }
+        
+        .msgs-spiner {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            border: 10px solid rgb(121, 114, 114, 0.2);
+            border-top: 10px solid rgb(173, 216, 250);
+            animation-name: spin;
+            animation-duration: 0.5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+        
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .set-msg {
+            background-color: rgb(125, 237, 160);
+            min-height: 50px;
+            min-width: 255px;
+            margin-top: 16px;
+            margin-left: 30px;
+            margin-right: 30px;
+            color: #fff;
+            padding: 6px;
+            border-radius: 6px;
+            display: inline-flex;
+            transition: 0.4s;
+            text-align: right;
+        }
+        
+        .msg {
+            position: relative;
+            top: -12px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        .typing {
+            position: absolute;
+            top: 0px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 24px;
+            background-color: rgb(248, 255, 169);
+            display: inline-flex;
+            text-align: right;
+            border-radius: 12px;
+            padding: 6px;
+            transition: 0.4s;
+            display: none;
+            opacity: 0;
+        }
+        
+        .v {
+            position: relative;
+            margin-top: auto;
+            font-size: 20px;
+            color: #fff;
+        }
+        
+        .set-emsg {
+            min-height: 50px;
+            min-width: 255px;
+            background-color: rgb(255, 243, 156);
+            margin-top: 16px;
+            margin-left: 260px;
+            color: #fff;
+            padding: 6px;
+            border-radius: 6px;
+            display: inline-flex;
+            transition: 0.4s;
+            text-align: right;
+        }
+        
+        .emsg {
+            position: relative;
+            top: 6px;
+            left: 40px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        .sender {
+            position: relative;
+            font-size: 20px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            background-color: rgb(125, 237, 160);
+            height: 24px;
+            padding: 1px;
+            border-radius: 6px;
+            margin-left: auto;
+            color: #fff;
+            z-index: 2;
+        }
+        
+        .msgs {
+            background-color: #fff;
+            height: 460px;
+            width: 600px;
+            position: absolute;
+            top: 56px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            transition: 1s;
+            opacity: 0;
+        }
+        
+         ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background: rgb(196, 190, 190);
+            border-radius: 10px;
+        }
+        
+         ::-webkit-scrollbar-track {
+            background: #fff;
+        }
+        
+        .set-log-out-btns {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+        }
+        
+        .log-out-text {
+            text-align: center;
+            font-size: 20px;
+            padding-top: 6px;
+            user-select: none;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        .set-log-out-box {
+            position: absolute;
+            top: 110px;
+            left: 50%;
+            transform: translate(-50%);
+            transition: 0.5s;
+            opacity: 0;
+            display: none;
+            z-index: 1;
+        }
+        
+        .log-out-box {
+            background-color: rgb(193, 213, 252);
+            height: 68px;
+            width: 400px;
+            border-radius: 10px;
+            transition: 0.5s;
+            box-shadow: 0 0 0 500vmax rgb(0, 0, 0, 0.6);
+        }
+        
+        .log-out-box-animation {
+            animation-name: log-out-box;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-play-state: running;
+        }
+        
+        @keyframes log-out-box {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .log-out-yes {
+            border: 2px solid rgb(254, 129, 129);
+            font-size: 24px;
+            border-radius: 6px;
+            background-color: rgb(255, 156, 156);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .log-out-yes:hover {
+            background-color: rgb(255, 248, 181);
+        }
+        
+        .log-out-cancel:hover {
+            background-color: rgb(255, 248, 181);
+        }
+        
+        .log-out-cancel {
+            border: 2px solid rgb(154, 204, 255);
+            font-size: 24px;
+            border-radius: 6px;
+            background-color: rgb(164, 223, 249);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .box-first-letter {
+            font-size: 50px;
+            text-align: center;
+            position: relative;
+            top: 20px;
+            color: #fff;
+            user-select: none;
+        }
+        
+        .box-ball {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            position: relative;
+            left: 50%;
+            transform: translate(-50%);
+            top: -80px;
+            background-color: rgb(125, 237, 160);
+            cursor: pointer;
+        }
+        
+        .box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 600px;
+            width: 600px;
+            background-color: #fff;
+            border-radius: 20px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .send-ball {
+            position: absolute;
+            top: var(--y);
+            left: var(--x);
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            transition: 0.3s;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .send {
+            position: absolute;
+            top: 520px;
+            left: 16px;
+            font-size: 40px;
+            border: none;
+            border-radius: 50%;
+            background-color: rgb(125, 237, 160);
+            transition: 0.3s;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .send-icon {
+            transform: rotate(-130deg);
+            color: #fff;
+            padding: 6px;
+            padding-right: 10px;
+            padding-top: 10px;
+            transition: 0.4s;
+        }
+        
+        .input {
+            position: absolute;
+            top: 526px;
+            left: 90px;
+            outline: none;
+            border: 3px solid #aaa;
+            border-radius: 20px;
+            width: 440px;
+            height: 40px;
+            font-size: 26px;
+            padding-top: 8px;
+            padding-left: 6px;
+            padding-right: 6px;
+            text-align: right;
+            resize: none;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        body {
+            opacity: 0;
+            transition: 0.4s;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .upload-btn {
+            position: absolute;
+            left: 100px;
+            top: 534px;
+            border: none;
+            font-size: 30px;
+            border-radius: 30px;
+            background-color: transparent;
+            transition: 0.4s;
+            color: #aaf4ff;
+            padding: 3px;
+            cursor: pointer;
+        }
+        
+        .camera-btn {
+            position: absolute;
+            left: 136px;
+            top: 536px;
+            border: none;
+            font-size: 30px;
+            border-radius: 50%;
+            background-color: transparent;
+            transition: 0.4s;
+            color: rgb(125, 237, 160);
+            cursor: pointer;
+        }
+    </style>
+
+
+</body>
+
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>family chat login</title>
+    <link rel="icon" href="chat.png">
+</head>
+
+<body>
+
+    <div class="set-loged-in">
+        <h1 class="loged-in">you loged in successfuly!</h1>
+    </div>
+
+    <div class="set-spiner">
+        <div class="spiner"></div>
+    </div>
+
+    <div class="set-box">
+        <div class="box">
+            <h1 class="title"></h1>
+            <input placeholder="what is your name?" class="name-input" type="text">
+            <input placeholder="what is the family name?" class="pass-input" type="password">
+
+            <h1 class="wrongpass">wrong password</h1>
+
+            <div class="set-login">
+                <button class="login">log in</button>
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+        .set-loged-in {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            z-index: 1;
+            transition: 0.4s;
+            opacity: 0;
+            display: none;
+        }
+        
+        .loged-in {
+            font-size: 100px;
+            text-align: center;
+            background: linear-gradient(to right, rgb(162, 202, 255), rgb(249, 165, 165), rgb(254, 246, 141), rgb(162, 202, 255));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+        
+        .set-box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: 0.4s;
+            opacity: 0;
+        }
+        
+        .wrongpass {
+            text-align: center;
+            position: relative;
+            top: 260px;
+            font-size: 24px;
+            color: red;
+            font-family: cursive;
+            transition: 0.4s;
+            opacity: 0;
+        }
+        
+        .set-login {
+            position: absolute;
+            left: 50%;
+            top: 500px;
+            transform: translate(-50%);
+        }
+        
+        .login {
+            font-size: 30px;
+            border: none;
+            border-radius: 6px;
+            background-color: rgb(248, 183, 183);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .title {
+            text-align: center;
+            color: rgb(179, 209, 255);
+            font-size: 50px;
+            text-shadow: 10px 10px 10px rgb(67, 64, 64);
+        }
+        
+        .name-input {
+            position: absolute;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%);
+            font-size: 30px;
+            border: none;
+            border-bottom: 3px solid #aaa;
+            outline: none;
+            border-radius: 6px;
+            padding-left: 6px;
+            background-color: transparent;
+            transition: 0.4s;
+        }
+        
+        .pass-input {
+            position: absolute;
+            left: 50%;
+            top: 56%;
+            transform: translate(-50%);
+            font-size: 30px;
+            border: none;
+            border-bottom: 3px solid #aaa;
+            outline: none;
+            border-radius: 6px;
+            padding-left: 6px;
+            background-color: transparent;
+            transition: 0.4s;
+        }
+        
+        .box {
+            height: 600px;
+            width: 600px;
+            background: linear-gradient(rgb(255, 201, 201), rgb(236, 252, 158), rgb(184, 217, 255));
+            border-radius: 20px;
+            transition: 0.4s;
+        }
+        
+        .set-spiner {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        
+        .spiner {
+            border: 14px solid rgb(187, 223, 255);
+            border-top: 14px solid rgba(247, 188, 126, 0.4);
+            height: 70px;
+            width: 70px;
+            border-radius: 50%;
+            animation-name: spin;
+            animation-duration: 0.8s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            transition: 0.4s;
+        }
+        
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+
+
+    <script>
+        const spiner = document.querySelector(".spiner");
+        const name_input = document.querySelector(".name-input");
+        const pass_input = document.querySelector(".pass-input");
+        const box = document.querySelector(".box");
+        const title = document.querySelector(".title");
+        const login = document.querySelector(".login");
+        const wrongpass = document.querySelector(".wrongpass");
+        const set_box = document.querySelector(".set-box");
+        const loged_in = document.querySelector(".loged-in");
+        const set_loged_in = document.querySelector(".set-loged-in");
+        let log = "false";
+        let logn = "false";
+
+        login.addEventListener('mouseover', () => {
+            login.style.transform = "scale(1.5)";
+        });
+
+        login.addEventListener('mouseout', () => {
+            login.style.transform = "scale(1)";
+        });
+
+        setInterval(() => {
+            title.textContent = "hello " + name_input.value;
+
+
+            if (name_input.value.length > 0) {
+                logn = "true";
+            } else {
+                logn = "false";
+            }
+
+            if (pass_input.value != "dariel" && pass_input.value != "Dariel" && pass_input.value != "Hess Ashkenazi" && pass_input.value != "hess ashkenazi" && pass_input.value != "Hess ashkenazi" && pass_input.value != "DARIEL") {
+                if (pass_input.value.length > 0) {
+                    wrongpass.style.opacity = "1";
+                    log = "false";
+                }
+            } else {
+                if (pass_input.value.length > 0) {
+                    wrongpass.style.opacity = "0";
+                    log = "true";
+                }
+            }
+        }, 100);
+
+        window.onload = () => {
+            setTimeout(() => {
+                spiner.style.opacity = "0";
+                set_box.style.opacity = "1";
+                setTimeout(() => {
+                    spiner.style.display = "none";
+                }, 200);
+            }, 1500);
+        }
+
+
+        login.onclick = () => {
+            if (log == "true" && logn == "true") {
+                localStorage.setItem("username", name_input.value);
+                box.style.transform = "scale(0)";
+                setTimeout(() => {
+                    box.style.transform = "scale(0)";
+                    set_loged_in.style.display = "block";
+                    loged_in.style.transform = "scale(0)";
+
+                    setTimeout(() => {
+                        set_loged_in.style.opacity = "1";
+                        loged_in.style.transform = "scale(1.1)";
+
+                        setTimeout(() => {
+                            loged_in.style.transform = "scale(1)";
+                            setTimeout(() => {
+                                window.location = "index.html";
+                            }, 2000);
+                        }, 200);
+                    }, 100);
+                }, 1000);
+            } else {
+                pass_input.style.left = "40%";
+                setTimeout(() => {
+                    name_input.style.left = "40%";
+                    pass_input.style.left = "50%";
+                    setTimeout(() => {
+                        name_input.style.left = "50%";
+                    }, 200);
+                }, 200);
+            }
+        }
+
+        name_input.addEventListener('keydown', (e) => {
+            let key = e.key.toLowerCase();
+            if (key == "arrowdown") {
+                pass_input.focus()
+            }
+            if (key == "enter") {
+                pass_input.focus();
+            }
+        });
+
+        pass_input.addEventListener('keydown', (e) => {
+            let key = e.key.toLowerCase();
+            if (key == "arrowup") {
+                name_input.focus();
+            }
+            if (key == "enter") {
+                login.click();
+            }
+        });
+    </script>
+</body>
+
+</html>
